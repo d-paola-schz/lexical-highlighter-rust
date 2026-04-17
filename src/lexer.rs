@@ -13,4 +13,66 @@ impl Lexer{
             currentPos: 0,
         }
     }
+
+    pub fn tokenize(&mut self) -> vec<Token> {
+        let mut tokens = Vec::new();
+
+        while let Some(ch) = self.current(){
+            if ch.is_whitespace(){
+                tokens.push(self.readWhitespace());
+            } else if ch == '#' {
+                tokens.push(self.readComment());
+            } else if ch == '"' || ch == '\''{
+                tokens.push(self.readString());
+            } else if is_operator(ch){
+                tokens.push(self.readOperator());
+            } else if ch.is_ascii_digit(){
+                tokens.push(self.readNumber());
+            } else if ch.is_alphabetic() || ch == '_'{
+                tokens.push(self.readWord())
+            } else {
+                self.advance();
+            }
+        }
+
+        tokens
+    }
+
+    fn advance(&mut self){
+        self.currentPos += 1;
+    }
+
+    fn current(&self) -> Option<char>{
+        self.input.get(self.currentPos).copied()
+    }
+
+    fn peek(&self) -> Option<char>{
+        self.input.get(self.currentPos+1).copied()
+    }
+
+    fn readWhitespace(&mut self) -> Token {
+        let mut temp = String::new();
+
+        while let Some(c) = self.current() {
+            if c.is_whitespace() {
+                temp.push(c);
+                self.advance();
+            } else {
+                break;
+            }
+        }
+
+        Token::new(temp, TokenType::Whitespace)
+    }
+
+    fn readComment(&mut self) -> Token{}
+
+    fn readString(&mut self) -> Token{}
+
+    fn readOperator(&mut self) -> Token{}
+
+    fn readNumber(&mut self) -> Token{}
+
+    fn readWord(&mut self) -> Token{}
+
 }
