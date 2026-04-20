@@ -59,10 +59,21 @@ impl Lexer{
 
         while let Some(c) = self.current() {
             if c.is_whitespace() {
-                temp.push(c);
+                if c == ' '{
+                    temp.push_str("&nbsp;");
+
+                } else if c == '\n' {
+                    temp.push_str("<br>");
+
+                } else if c == '\t' {
+                    temp.push_str("&emsp;");
+
+                }
                 self.advance();
+
             } else {
                 break;
+                
             }
         }
 
