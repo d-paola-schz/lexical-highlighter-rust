@@ -2,7 +2,7 @@ use crate::token::{Token, TokenType};
 
 // #[derive(Debug, Clone)]
 pub struct Lexer{
-    input: vec<char>,
+    input: Vec<char>,
     currentPos: usize,
 }
 
@@ -14,7 +14,7 @@ impl Lexer{
         }
     }
 
-    pub fn tokenize(&mut self) -> vec<Token> {
+    pub fn tokenize(&mut self) -> Vec<Token> {
         let mut tokens = Vec::new();
 
         while let Some(ch) = self.current(){
@@ -65,14 +65,33 @@ impl Lexer{
         Token::new(temp, TokenType::Whitespace)
     }
 
-    fn readComment(&mut self) -> Token{}
+    fn readComment(&mut self) -> Token{
+        let mut temp = String::new();
 
-    fn readString(&mut self) -> Token{}
+        while let Some(c) = self.current() {
+            if c == '\n' {
+                break;
+            } else {
+                temp.push(c);
+                self.advance();
+            }
+        }
+    }
 
-    fn readOperator(&mut self) -> Token{}
+    fn readString(&mut self) -> Token{
+        unimplemented!() 
+    }
 
-    fn readNumber(&mut self) -> Token{}
+    fn readOperator(&mut self) -> Token{
+        unimplemented!() 
+    }
 
-    fn readWord(&mut self) -> Token{}
+    fn readNumber(&mut self) -> Token{
+        unimplemented!() 
+    }
+
+    fn readWord(&mut self) -> Token{
+        unimplemented!() 
+    }
 
 }
