@@ -91,7 +91,23 @@ impl Lexer{
     }
 
     fn readWord(&mut self) -> Token{
-        unimplemented!() 
+        let mut temp = String::new();
+        let rWords = ["if", "else", "for", "while", "def", "return", "class", "import"];
+
+        while let Some(c) = self.current(){
+            if c.is_alphabetic() || c == '_' || c.is_ascii_digit(){
+                temp.push(c);
+                self.advance();
+            } else {
+                break;
+            }
+        }
+
+        if rWords.contains(&temp.as_str()){
+            Token::new(temp, TokenType::Keyword)
+        } else {
+            Token::new(temp, TokenType::Variable)
+        }
     }
 
 }
