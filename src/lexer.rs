@@ -38,6 +38,10 @@ impl Lexer{
         tokens
     }
 
+    fn is_operator(&self, ch: char) -> bool{
+        matches!(ch, '+' | '-' | '*' | '/' | '%' | '=' | '<' | '>' | '!' | '&')
+    }
+
     fn advance(&mut self){
         self.currentPos += 1;
     }
@@ -93,18 +97,21 @@ impl Lexer{
     fn readWord(&mut self) -> Token{
         let mut temp = String::new();
         let rWords = ["if", "else", "for", "while", "def", "return", "class", "import"];
+        let oWords = ["and", "or", "not", "in", "is"];
 
         while let Some(c) = self.current(){
             if c.is_alphabetic() || c == '_' || c.is_ascii_digit(){
                 temp.push(c);
                 self.advance();
-            } else {
+            }  else {
                 break;
             }
         }
 
         if rWords.contains(&temp.as_str()){
             Token::new(temp, TokenType::Keyword)
+        } else if oWords.contains(&temp.as_str()){
+            Token::new(temp, TokenType::Operator)
         } else {
             Token::new(temp, TokenType::Variable)
         }
