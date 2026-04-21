@@ -25,7 +25,7 @@ fn css_generator()->String{
 }
 
 pub fn file_generator(html:String)->io::Result<()>{
-    let mut file = File::create("result.html")?;
+    let mut file = File::create("out.html")?;
     file.write_all(html.as_bytes())?;
     Ok(())
 }

@@ -4,17 +4,17 @@ mod token;
 
 use lexer::{Lexer};
 use html_generator::{html_generator, file_generator};
+use std::env;
+use std::fs;
 
 // use crate::token::{Token, TokenType};
 
 fn main() -> std::io::Result<()>{
-    let python_code = String::from("#frutas = ['manzana', 'plátano', 'mango']
-for fruta in frutas:
-    print(fruit.capitalize())   hola
+    let mut path = env::current_dir()?;
+    path.push("src/input.txt"); 
 
-# Output: Manzana
-#         Plátano
-#         Mango");
+    let python_code = fs::read_to_string(path)?;
+
     let mut lexer = Lexer::new(python_code);
     let tokens = lexer.tokenize();
     let html_content = html_generator(tokens);

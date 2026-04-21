@@ -1,0 +1,10 @@
+#frutas = ['manzana', 'plátano', 'mango']
+def print_hello(var_1):
+    print(var_1)
+
+for fruta in frutas:
+    print(fruta.capitalize())
+
+# Output: Manzana   
+#         Plátano
+#         Mango"
