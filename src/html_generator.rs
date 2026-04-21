@@ -1,30 +1,31 @@
-use crate::token::{Token, TokenType};
+use crate::token::{Token};
 use std::fs::File;
-use std::io::{self, write};
+use std::io::{self, Write};
 
-fn htmlGenerator(tokens: Vec<Token>)->String{
-    let mut htmlOutput = String::new();
+pub fn html_generator(tokens: Vec<Token>)->String{
+    let mut html_output = String::new();
     for token in tokens{
-        let htmltoken = format!("<span class = \"{}\">{}</span>", token.TokenType, token.text);
-        htmlOutput.push_str(htmltoken);
+        let htmltoken = format!("<span class = \"{}\">{}</span>", token.token_type.to_str(), token.text);
+        html_output.push_str(&htmltoken);
     }
 
-    format!("<!DOCTYPE html><html lang=\"en\"><head><style>{}</style></head><body>{}</body></html>", cssGenerator(), htmlOutput)
+    format!("<!DOCTYPE html><html lang=\"en\"><head><style>{}</style></head><body>{}</body></html>", css_generator(), html_output)
 }
 
-fn cssGenerator()->String{
+fn css_generator()->String{
     String::from("
     .Keyword{color:pink}
-    .Varibale{color:purple}
-    .Comment{color:grey}
+    .Variable{color:purple}
+    .Comments{color:grey}
     .Operator{color:green}
     .Number{color:orange}
     .String{color:blue}
+    .None{color: black}
     ")
 }
 
-fn fileGenerator(html:String)->io::Result<()>{
+pub fn file_generator(html:String)->io::Result<()>{
     let mut file = File::create("result.html")?;
-    file.wirte_all(html.as_bytes())?;
+    file.write_all(html.as_bytes())?;
     Ok(())
 }
