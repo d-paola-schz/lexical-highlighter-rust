@@ -10,7 +10,7 @@ use html_generator::{html_generator, file_generator};
 fn main() -> std::io::Result<()>{
     let python_code = String::from("#frutas = ['manzana', 'plátano', 'mango']
 for fruta in frutas:
-    print(fruit.capitalize())
+    print(fruit.capitalize())   hola
 
 # Output: Manzana
 #         Plátano

@@ -29,6 +29,19 @@ impl Lexer{
     fn peek(&self) -> Option<char>{
         self.input.get(self.current_pos+1).copied()
     }
+
+    fn peek_non_whitespace(&self) -> Option<char> {
+        let mut i = self.current_pos;
+
+        while let Some(c) = self.input.get(i) {
+            if c.is_whitespace() {
+                i += 1;
+            } else {
+                return Some(*c);
+            }
+        }
+        None
+    }
     
     fn read_whitespace(&mut self) -> Token {
         let mut temp = String::new();
@@ -84,14 +97,14 @@ impl Lexer{
     
     fn read_word(&mut self) -> Token{
         let mut temp = String::new();
-        let r_words = ["if", "else", "for", "while", "def", "return", "class", "import"];
+        let r_words = ["if", "else", "for", "while", "def", "return", "class", "import", "print"];
         let o_words = ["and", "or", "not", "in", "is"];
     
         while let Some(c) = self.current(){
             if c.is_alphabetic() || c == '_' || c.is_ascii_digit(){
                 temp.push(c);
                 self.advance();
-            }  else {
+            } else {
                 break;
             }
         }
@@ -100,6 +113,8 @@ impl Lexer{
             Token::new(temp, TokenType::Keyword)
         } else if o_words.contains(&temp.as_str()){
             Token::new(temp, TokenType::Operator)
+        }  else if self.peek_non_whitespace() == Some('(') {
+            Token::new(temp, TokenType::None)
         } else {
             Token::new(temp, TokenType::Variable)
         }
@@ -120,7 +135,7 @@ impl Lexer{
                 tokens.push(self.read_operator());
             } else if ch.is_ascii_digit(){
                 tokens.push(self.read_number());
-            } else if ch.is_alphabetic() || ch == '_'{
+            } else if ch.is_alphabetic() || ch == '_' { //|| ch == '.'{
                 tokens.push(self.read_word())
             } else {
                 tokens.push(Token::new(ch.to_string(), TokenType::None));
