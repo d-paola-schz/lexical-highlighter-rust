@@ -4,3 +4,15 @@ def print_hello(var_1):
 
 for fruta in frutas:
     print(fruta.capitalize())
+
+a = 10.89
+b = 5
+
+if a >= b and a != 0:
+    print("comparacion correcta")
+
+c = a + b * 2 - 4 / 2 % 3
+
+mensaje = "hola mundo"
+otro = 'python es cool'
+

@@ -82,17 +82,75 @@ impl Lexer{
         }
         Token::new(temp, TokenType::Comments)
     }
-    
-    fn read_string(&mut self) -> Token{
-        unimplemented!() 
+ 
+    fn read_string(&mut self) -> Token {
+        let mut temp = String::new();
+
+        // Guardar el delimitador (' o ")
+        let quote = self.current().unwrap();
+        temp.push(quote);
+        self.advance();
+
+        while let Some(c) = self.current() {
+            temp.push(c);
+            self.advance();
+
+            if c == quote {
+                break;
+            }
+        }
+
+        Token::new(temp, TokenType::String)
     }
     
-    fn read_operator(&mut self) -> Token{
-        unimplemented!() 
+    fn read_operator(&mut self) -> Token {
+        let mut temp = String::new();
+
+        if let Some(c) = self.current() {
+            temp.push(c);
+
+            // Verificar operadores compuestos
+            if let Some(next) = self.peek() {
+                let is_double = matches!(
+                    (c, next),
+                    ('=', '=') |
+                    ('!', '=') |
+                    ('<', '=') |
+                    ('>', '=') |
+                    ('&', '&') |
+                    ('|', '|')
+                );
+
+                if is_double {
+                    temp.push(next);
+                    self.advance();
+                }
+            }
+
+            self.advance();
+        }
+
+        Token::new(temp, TokenType::Operator)
     }
     
-    fn read_number(&mut self) -> Token{
-        unimplemented!() 
+    fn read_number(&mut self) -> Token {
+        let mut temp = String::new();
+        let mut has_dot = false;
+
+        while let Some(c) = self.current() {
+            if c.is_ascii_digit() {
+                temp.push(c);
+                self.advance();
+            } else if c == '.' && !has_dot {
+                has_dot = true;
+                temp.push(c);
+                self.advance();
+            } else {
+                break;
+            }
+        }
+
+        Token::new(temp, TokenType::Number)
     }
     
     fn read_word(&mut self) -> Token{
