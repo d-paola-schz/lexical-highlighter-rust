@@ -86,7 +86,7 @@ impl Lexer{
     fn read_string(&mut self) -> Token {
         let mut temp = String::new();
 
-        // Guardar el delimitador (' o ")
+        //guarda el delimitador (' o ")
         let quote = self.current().unwrap();
         temp.push(quote);
         self.advance();
@@ -109,7 +109,7 @@ impl Lexer{
         if let Some(c) = self.current() {
             temp.push(c);
 
-            // Verificar operadores compuestos
+            //verifica los operadores compuestos
             if let Some(next) = self.peek() {
                 let is_double = matches!(
                     (c, next),
